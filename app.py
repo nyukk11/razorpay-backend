@@ -1,4 +1,13 @@
 import os
+import pkgutil
+
+# Monkey patch to fix the missing ImpImporter (MUST be before importing razorpay)
+if not hasattr(pkgutil, 'ImpImporter'):
+    class ImpImporter:
+        pass
+    pkgutil.ImpImporter = ImpImporter
+
+# Now import razorpay and other libraries
 import razorpay
 from flask import Flask, request, jsonify
 from flask_cors import CORS
